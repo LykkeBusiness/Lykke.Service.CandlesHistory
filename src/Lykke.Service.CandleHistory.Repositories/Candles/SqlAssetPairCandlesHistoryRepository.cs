@@ -9,7 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Lykke.Job.CandlesProducer.Contract;
-using Lykke.Service.CandleHistory.Repositories.Extensions;
+using Lykke.Logs.MsSql.Extensions;
+
 
 namespace Lykke.Service.CandleHistory.Repositories.Candles
 {
