@@ -35,14 +35,6 @@
   <Target Name="CopySerilogConfigOnPublish" AfterTargets="Publish">
     <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
   </Target>
-
-  <Target Name="CopySerilogConfig" AfterTargets="AfterBuild">
-    <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopySerilogConfigOnPublish" AfterTargets="Publish">
-    <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
-  </Target>
-
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
     <PackageReference Include="Lykke.Common" Version="6.8.4" />
