@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using Lykke.Service.Assets.Client;
 using Lykke.Service.CandlesHistory.Services.Settings;
 using Lykke.SettingsReader.Attributes;
+using Lykke.Snow.Common.Startup.ApiKey;
 
 namespace Lykke.Service.CandlesHistory
 {
@@ -19,5 +20,8 @@ namespace Lykke.Service.CandlesHistory
         public AssetsSettings Assets { get; set; }
 
         public RedisSettings RedisSettings { get; set; }
+
+        [Optional]
+        public ClientSettings MtCandlesHistoryServiceClient { get; set; } = new ClientSettings();
     }
 }

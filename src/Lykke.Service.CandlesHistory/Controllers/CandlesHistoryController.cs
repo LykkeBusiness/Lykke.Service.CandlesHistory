@@ -11,6 +11,7 @@ using Lykke.Service.CandlesHistory.Core.Services.Candles;
 using Lykke.Service.CandlesHistory.Models;
 using Lykke.Service.CandlesHistory.Models.CandlesHistory;
 using Lykke.Service.CandlesHistory.Services.Settings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoreLinq;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -20,6 +21,7 @@ namespace Lykke.Service.CandlesHistory.Controllers
     /// <summary>
     /// A controller for candles history
     /// </summary>
+    [Authorize]
     [Route("api/[controller]")]
     public class CandlesHistoryController : Controller
     {

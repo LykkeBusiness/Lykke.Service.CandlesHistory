@@ -28,6 +28,8 @@ using AzureQueueSettings = Lykke.AzureQueueIntegration.AzureQueueSettings;
 using Lykke.Service.CandlesHistory.Core.Domain.Candles;
 using Lykke.Service.CandlesHistory.Services;
 using Lykke.Service.CandlesHistory.Services.Assets;
+using Lykke.Snow.Common.Startup;
+using Lykke.Snow.Common.Startup.ApiKey;
 using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Lykke.Service.CandlesHistory
@@ -62,14 +64,21 @@ namespace Lykke.Service.CandlesHistory
                         options.SerializerSettings.ContractResolver =
                             new Newtonsoft.Json.Serialization.DefaultContractResolver();
                     });
+                
+                var settings = Configuration.LoadSettings<AppSettings>();
+                
+                services.AddApiKeyAuth(settings.CurrentValue.MtCandlesHistoryServiceClient);
 
                 services.AddSwaggerGen(options =>
                 {
                     options.DefaultLykkeConfiguration("v1", "Candles history service");
+                    if (!string.IsNullOrWhiteSpace(settings.CurrentValue.MtCandlesHistoryServiceClient?.ApiKey))
+                    {
+                        options.OperationFilter<ApiKeyHeaderOperationFilter>();
+                    }
                 });
 
                 var builder = new ContainerBuilder();
-                var settings = Configuration.LoadSettings<AppSettings>();
                 var marketType = settings.CurrentValue.CandlesHistory != null
                     ? MarketType.Spot
                     : MarketType.Mt;
@@ -123,6 +132,7 @@ namespace Lykke.Service.CandlesHistory
                 
                 app.UseLykkeMiddleware(nameof(Startup), ex => ErrorResponse.Create("Technical problem"));
                 
+                app.UseAuthentication();
                 app.UseMvc();
                 app.UseSwagger(c =>
                 {
