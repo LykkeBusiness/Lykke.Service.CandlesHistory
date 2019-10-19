@@ -14,6 +14,7 @@ using Dapper;
 using Lykke.Job.CandlesProducer.Contract;
 using Lykke.Logs.MsSql.Extensions;
 
+
 namespace Lykke.Service.CandleHistory.Repositories.Candles
 {
     public class SqlAssetPairCandlesHistoryRepository
