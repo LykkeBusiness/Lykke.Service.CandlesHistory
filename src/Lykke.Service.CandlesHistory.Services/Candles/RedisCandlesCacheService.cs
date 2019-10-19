@@ -48,7 +48,7 @@ namespace Lykke.Service.CandlesHistory.Services.Candles
         {
             throw new NotSupportedException();
         }
-        
+
         public async Task<IEnumerable<ICandle>> GetCandlesAsync(string assetPairId, CandlePriceType priceType, CandleTimeInterval timeInterval, DateTime fromMoment, DateTime toMoment)
         {
             var key = GetKey(assetPairId, priceType, timeInterval);
@@ -57,6 +57,20 @@ namespace Lykke.Service.CandlesHistory.Services.Candles
             var serializedValues = await _multiplexer.GetDatabase().SortedSetRangeByValueAsync(key, from, to, Exclude.Start);
             
             return serializedValues.Select(v => DeserializeCandle(v, assetPairId, priceType, timeInterval));
+        }
+
+        public async Task<ICandle> GetLatestCandleAsync(string assetPairId, CandlePriceType priceType, CandleTimeInterval timeInterval, DateTime lastMoment)
+        {
+            var key = GetKey(assetPairId, priceType, timeInterval);
+            var last = lastMoment.ToString(TimestampFormat);
+            var serializedValues = await _multiplexer.GetDatabase().SortedSetRangeByValueAsync(key,
+                max: last, 
+                exclude: Exclude.Start, 
+                order: Order.Descending, 
+                skip: 0, 
+                take: 1);
+
+            return serializedValues.Select(v => DeserializeCandle(v, assetPairId, priceType, timeInterval)).SingleOrDefault();
         }
 
         private static ICandle DeserializeCandle(byte[] value, string assetPairId, CandlePriceType priceType, CandleTimeInterval timeInterval)
