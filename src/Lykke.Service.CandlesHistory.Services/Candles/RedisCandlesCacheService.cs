@@ -62,9 +62,11 @@ namespace Lykke.Service.CandlesHistory.Services.Candles
         public async Task<ICandle> GetLatestCandleAsync(string assetPairId, CandlePriceType priceType, CandleTimeInterval timeInterval, DateTime lastMoment)
         {
             var key = GetKey(assetPairId, priceType, timeInterval);
-            var last = lastMoment.ToString(TimestampFormat);
+            var min = DateTime.MinValue.ToString(TimestampFormat);
+            var max = lastMoment.ToString(TimestampFormat);
             var serializedValues = await _multiplexer.GetDatabase().SortedSetRangeByValueAsync(key,
-                max: last, 
+                min: min,
+                max: max, 
                 exclude: Exclude.Start, 
                 order: Order.Descending, 
                 skip: 0, 
