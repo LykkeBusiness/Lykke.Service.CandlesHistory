@@ -6,10 +6,8 @@ using Lykke.Service.CandlesHistory.Core.Domain.Candles;
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Common;
 using Dapper;
 using Lykke.Job.CandlesProducer.Contract;
 using Lykke.Logs.MsSql.Extensions;
@@ -54,10 +52,17 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
                 try { conn.CreateTableIfDoesntExists(createTableScript, justTableName, schemaName); }
                 catch (Exception ex)
                 {
-                    log?.WriteErrorAsync(nameof(SqlAssetPairCandlesHistoryRepository), "CreateTableIfDoesntExists", null, ex);
+                    log?.WriteErrorAsync(nameof(SqlAssetPairCandlesHistoryRepository),
+                        "CreateTableIfDoesntExists",
+                        new {createTableScript, justTableName, schemaName}.ToJson(),
+                        ex);
                     throw;
                 }
             }
+
+            log?.WriteInfoAsync(nameof(SqlAssetPairCandlesHistoryRepository),
+                nameof(SqlAssetPairCandlesHistoryRepository), 
+                $"New table has been created successfully: {_tableName}");
         }
 
         public async Task<IEnumerable<ICandle>> GetCandlesAsync(CandlePriceType priceType, CandleTimeInterval interval, DateTime from, DateTime to)
