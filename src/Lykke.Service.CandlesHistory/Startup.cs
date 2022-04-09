@@ -22,7 +22,6 @@ using Lykke.Service.CandlesHistory.DependencyInjection;
 using Lykke.SettingsReader;
 using Lykke.SlackNotification.AzureQueue;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -36,7 +35,9 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.Logging;
 using Lykke.Snow.Common.Startup.Log;
 using Lykke.Snow.Common.Startup.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
 namespace Lykke.Service.CandlesHistory
 {
@@ -44,14 +45,14 @@ namespace Lykke.Service.CandlesHistory
     public class Startup
     {
         private IReloadingManager<AppSettings> _mtSettingsManager;
-        private IHostingEnvironment Environment { get; set; }
+        private IHostEnvironment Environment { get; set; }
         private ILifetimeScope ApplicationContainer { get; set; }
         private IConfigurationRoot Configuration { get; }
         private ILog Log { get; set; }
 
         public static string ServiceName { get; } = PlatformServices.Default.Application.ApplicationName;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostEnvironment env)
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -126,7 +127,7 @@ namespace Lykke.Service.CandlesHistory
         }
 
         [UsedImplicitly]
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, IApplicationLifetime appLifetime)
         {
             try
             {
