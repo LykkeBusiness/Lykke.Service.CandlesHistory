@@ -11,6 +11,7 @@ using Lykke.Job.CandlesProducer.Contract;
 using Lykke.Service.CandlesHistory.Core.Domain.Candles;
 using Lykke.Service.CandlesHistory.Core.Services.Assets;
 using Lykke.Service.CandlesHistory.Core.Services.Candles;
+using Lykke.Service.CandlesHistory.Extensions;
 using Lykke.Service.CandlesHistory.Models;
 using Lykke.Service.CandlesHistory.Models.CandlesHistory;
 using Lykke.Service.CandlesHistory.Services.Settings;
@@ -30,17 +31,20 @@ namespace Lykke.Service.CandlesHistory.Controllers
         private readonly ICandlesManager _candlesManager;
         private readonly IAssetPairsManager _assetPairsManager;
         private readonly DbSettings _dbSettings;
+        private readonly ICandlesHistoryRepository _candlesHistoryRepository;
 
         #region Initialization
 
         public CandlesHistoryController(
             ICandlesManager candlesManager,
             IAssetPairsManager assetPairsManager,
-            DbSettings dbSettings)
+            DbSettings dbSettings,
+            ICandlesHistoryRepository candlesHistoryRepository)
         {
             _candlesManager = candlesManager;
             _assetPairsManager = assetPairsManager;
             _dbSettings = dbSettings;
+            _candlesHistoryRepository = candlesHistoryRepository;
         }
 
         #endregion
@@ -322,6 +326,40 @@ namespace Lykke.Service.CandlesHistory.Controllers
                 Exists = recentTime.HasValue,
                 ResultTimestamp = recentTime ?? default
             });
+        }
+
+        [HttpGet("price-evolutions/{assetPairId}/{priceType}/{date:datetime}")]
+        [ProducesResponseType(typeof(IEnumerable<PriceEvolution>), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> GetPriceEvolutions([FromRoute] string assetPairId, CandlePriceType priceType, DateTime date)
+        {
+            date = date == default
+                ? DateTime.UtcNow.Date
+                : date.ConvertToUtc().Date;
+
+            var tasks = new Dictionary<PriceEvolutionPeriodType, Task<(decimal? firstEod, decimal? lowest, decimal? highest)>>();
+            foreach (PriceEvolutionPeriodType period in Enum.GetValues(typeof(PriceEvolutionPeriodType)))
+            {
+                var startDate = period.GetPriceEvolutionPeriodDate(date);
+                tasks.Add(period, _candlesHistoryRepository.GetPriceEvolutions(assetPairId,
+                    priceType, CandleTimeInterval.Day, startDate));
+            }
+            await Task.WhenAll(tasks.Values);
+
+            var result = new List<PriceEvolution>();
+
+            tasks.ForEach(async x =>
+            {
+                var value = await x.Value;
+                result.Add(new PriceEvolution
+                {
+                    Period = x.Key,
+                    FirstEod = value.firstEod,
+                    Highest = value.highest,
+                    Lowest = value.lowest
+                });
+            });
+
+            return Ok(result);
         }
 
         #endregion

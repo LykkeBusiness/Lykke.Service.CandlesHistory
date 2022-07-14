@@ -163,6 +163,30 @@ namespace Lykke.Service.CandlesHistory.Client
         /// <summary>
         /// Returns the time of the closest available bar in the past if any.
         /// </summary>
+        /// <param name='assetPairId'>
+        /// Asset pair ID
+        /// </param>
+        /// <param name='priceType'>
+        /// Price type. Possible values include: 'Unspecified', 'Bid', 'Ask',
+        /// 'Mid', 'Trades'
+        /// </param>
+        /// <param name='date'>
+        /// Starting point in ISO 8601
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        public static object GetPriceEvolutionsOrError(this ICandleshistoryservice operations, string assetPairId, CandlePriceType priceType, System.DateTime date)
+        {
+            return operations.GetPriceEvolutionsOrErrorWithHttpMessagesAsync(assetPairId, priceType, date).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Returns the time of the closest available bar in the past if any.
+        /// </summary>
         /// <param name='operations'>
         /// The operations group for this extension method.
         /// </param>

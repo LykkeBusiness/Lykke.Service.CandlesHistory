@@ -9,6 +9,7 @@ using Microsoft.Data.SqlClient;
 using System.Threading.Tasks;
 using Common;
 using Dapper;
+using JetBrains.Annotations;
 using Lykke.Job.CandlesProducer.Contract;
 using Lykke.Logs.MsSql.Extensions;
 
@@ -63,6 +64,32 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
             log?.WriteInfoAsync(nameof(SqlAssetPairCandlesHistoryRepository),
                 nameof(SqlAssetPairCandlesHistoryRepository), 
                 $"New table has been created successfully: {_tableName}");
+        }
+
+        [CanBeNull]
+        public async Task<(decimal? firstEod, decimal? lowest, decimal? highest)> GetPriceEvolutions(CandlePriceType priceType, CandleTimeInterval interval, DateTime? startDate)
+        {
+            var firstEodWhereClause =
+                "WHERE PriceType=@priceTypeVar AND TimeInterval=@intervalVar AND (@startDateVar IS NULL OR Timestamp <= @startDateVar)";
+            var firstEodOrderByClause = $"ORDER BY Timestamp {(startDate.HasValue ? "DESC" : "ASC")}"; 
+            var lowAndHightwhereClause =
+                "WHERE PriceType=@priceTypeVar AND TimeInterval=@intervalVar AND (@startDateVar IS NULL OR Timestamp >= @startDateVar)";
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var gridReader = await conn.QueryMultipleAsync(
+                    $"SELECT TOP 1 [Close] FROM {_tableName} {firstEodWhereClause} {firstEodOrderByClause}; SELECT MIN(Low), MAX(High) FROM {_tableName} {lowAndHightwhereClause}",
+                    new
+                    {
+                        priceTypeVar = priceType,
+                        intervalVar = interval,
+                        startDateVar = startDate
+                    }, null, commandTimeout);
+
+                var firstEod = await gridReader.ReadSingleOrDefaultAsync<double?>();
+                var lowAndHigh = await gridReader.ReadSingleOrDefaultAsync<(double? Low, double? High)>();
+                
+                return (Convert.ToDecimal(firstEod), Convert.ToDecimal(lowAndHigh.Low), Convert.ToDecimal(lowAndHigh.High));
+            }
         }
 
         public async Task<IEnumerable<ICandle>> GetCandlesAsync(CandlePriceType priceType, CandleTimeInterval interval, DateTime from, DateTime to)
