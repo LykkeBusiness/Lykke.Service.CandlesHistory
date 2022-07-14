@@ -179,7 +179,7 @@ namespace Lykke.Service.CandlesHistory.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        public static async Task<object> GetPriceEvolutionsOrError(this ICandleshistoryservice operations, string assetPairId, CandlePriceType priceType, System.DateTime date)
+        public static async Task<object> GetPriceEvolutionsOrError(this ICandleshistoryservice operations, string assetPairId, CandlePriceType priceType, System.DateTime date, CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var _result = await operations.GetPriceEvolutionsOrErrorWithHttpMessagesAsync(assetPairId, priceType, date, null, cancellationToken).ConfigureAwait(false))
             {
