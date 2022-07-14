@@ -11,6 +11,10 @@ namespace Lykke.Service.CandlesHistory.Core.Domain.Candles
     public interface ICandlesHistoryRepository
     {
         Task<IEnumerable<ICandle>> GetCandlesAsync(string assetPairId, CandleTimeInterval interval, CandlePriceType priceType, DateTime @from, DateTime to);
+
+        Task<(decimal? firstEod, decimal? lowest, decimal? highest)> GetPriceEvolutions(string assetPairId,
+            CandlePriceType priceType, CandleTimeInterval interval, DateTime? startDate);
+        
         Task<ICandle> TryGetFirstCandleAsync(string assetPairId, CandleTimeInterval interval, CandlePriceType priceType);
     }
 }

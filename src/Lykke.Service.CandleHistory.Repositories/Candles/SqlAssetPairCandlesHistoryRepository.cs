@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using JetBrains.Annotations;
 using Lykke.Job.CandlesProducer.Contract;
 using Lykke.Logs.MsSql.Extensions;
 
@@ -56,6 +57,32 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
                     log?.WriteErrorAsync(nameof(SqlAssetPairCandlesHistoryRepository), "CreateTableIfDoesntExists", null, ex);
                     throw;
                 }
+            }
+        }
+
+        [CanBeNull]
+        public async Task<(decimal? firstEod, decimal? lowest, decimal? highest)> GetPriceEvolutions(CandlePriceType priceType, CandleTimeInterval interval, DateTime? startDate)
+        {
+            var firstEodWhereClause =
+                "WHERE PriceType=@priceTypeVar AND TimeInterval=@intervalVar AND (@startDateVar IS NULL OR Timestamp <= @startDateVar)";
+            var firstEodOrderByClause = $"ORDER BY Timestamp {(startDate.HasValue ? "DESC" : "ASC")}"; 
+            var lowAndHightwhereClause =
+                "WHERE PriceType=@priceTypeVar AND TimeInterval=@intervalVar AND (@startDateVar IS NULL OR Timestamp >= @startDateVar)";
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var gridReader = await conn.QueryMultipleAsync(
+                    $"SELECT TOP 1 [Close] FROM {_tableName} {firstEodWhereClause} {firstEodOrderByClause}; SELECT MIN(Low), MAX(High) FROM {_tableName} {lowAndHightwhereClause}",
+                    new
+                    {
+                        priceTypeVar = priceType,
+                        intervalVar = interval,
+                        startDateVar = startDate
+                    }, null, commandTimeout);
+
+                var firstEod = await gridReader.ReadSingleOrDefaultAsync<double?>();
+                var lowAndHigh = await gridReader.ReadSingleOrDefaultAsync<(double? Low, double? High)>();
+                
+                return (Convert.ToDecimal(firstEod), Convert.ToDecimal(lowAndHigh.Low), Convert.ToDecimal(lowAndHigh.High));
             }
         }
 
