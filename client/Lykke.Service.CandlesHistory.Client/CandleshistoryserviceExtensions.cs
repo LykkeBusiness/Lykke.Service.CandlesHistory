@@ -181,7 +181,10 @@ namespace Lykke.Service.CandlesHistory.Client
         /// </param>
         public static object GetPriceEvolutionsOrError(this ICandleshistoryservice operations, string assetPairId, CandlePriceType priceType, System.DateTime date)
         {
-            return operations.GetPriceEvolutionsOrErrorWithHttpMessagesAsync(assetPairId, priceType, date).GetAwaiter().GetResult();
+            using (var _result = await operations.GetPriceEvolutionsOrErrorWithHttpMessagesAsync(assetPairId, priceType, date, null, cancellationToken).ConfigureAwait(false))
+            {
+                return _result.Body;
+            }
         }
 
         /// <summary>
