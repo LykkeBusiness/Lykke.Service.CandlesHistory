@@ -88,7 +88,10 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
                 var firstEod = await gridReader.ReadSingleOrDefaultAsync<double?>();
                 var lowAndHigh = await gridReader.ReadSingleOrDefaultAsync<(double? Low, double? High)>();
                 
-                return (Convert.ToDecimal(firstEod), Convert.ToDecimal(lowAndHigh.Low), Convert.ToDecimal(lowAndHigh.High));
+                return (
+                    firstEod.HasValue ? Convert.ToDecimal(firstEod.Value) : (decimal?)null,
+                    lowAndHigh.Low.HasValue ? Convert.ToDecimal(lowAndHigh.Low.Value) : (decimal?)null,
+                    lowAndHigh.High.HasValue ? Convert.ToDecimal(lowAndHigh.High.Value) : (decimal?)null);
             }
         }
 
