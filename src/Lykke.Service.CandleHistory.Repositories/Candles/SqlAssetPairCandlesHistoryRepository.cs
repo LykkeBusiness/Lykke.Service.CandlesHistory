@@ -61,31 +61,43 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
         }
 
         [CanBeNull]
-        public async Task<(decimal? firstEod, decimal? lowest, decimal? highest)> GetPriceEvolutions(CandlePriceType priceType, CandleTimeInterval interval, DateTime? startDate)
+        public async Task<decimal?> GetPricesEvolution(CandlePriceType priceType, DateTime? startDate)
         {
-            var firstEodWhereClause =
-                "WHERE PriceType=@priceTypeVar AND TimeInterval=@intervalVar AND (@startDateVar IS NULL OR Timestamp <= @startDateVar)";
-            var firstEodOrderByClause = $"ORDER BY Timestamp {(startDate.HasValue ? "DESC" : "ASC")}"; 
-            var lowAndHightwhereClause =
-                "WHERE PriceType=@priceTypeVar AND TimeInterval=@intervalVar AND (@startDateVar IS NULL OR Timestamp >= @startDateVar)";
+            var whereClause =
+                "WHERE PriceType=@priceTypeVar AND TimeInterval=86400 AND (@startDateVar IS NULL OR Timestamp <= @startDateVar)";
+            var orderByClause = $"ORDER BY Timestamp {(startDate.HasValue ? "DESC" : "ASC")}";
             using (var conn = new SqlConnection(_connectionString))
             {
-                var gridReader = await conn.QueryMultipleAsync(
-                    $"SELECT TOP 1 [Close] FROM {_tableName} {firstEodWhereClause} {firstEodOrderByClause}; SELECT MIN(Low), MAX(High) FROM {_tableName} {lowAndHightwhereClause}",
+                var result = await conn.QuerySingleOrDefaultAsync<double?>(
+                    $"SELECT TOP 1 [Close] FROM {_tableName} {whereClause} {orderByClause}",
                     new
                     {
                         priceTypeVar = priceType,
-                        intervalVar = interval,
+                        startDateVar = startDate
+                    }, null, commandTimeout);
+                
+                return result.HasValue ? Convert.ToDecimal(result.Value) : (decimal?)null;
+            }
+        }
+
+        [CanBeNull]
+        public async Task<(decimal low, decimal high)?> GetCandlesEvolution(CandlePriceType priceType, DateTime? startDate)
+        {
+            var lowAndHightwhereClause =
+                "WHERE PriceType=@priceTypeVar AND TimeInterval=86400 AND (@startDateVar IS NULL OR Timestamp >= @startDateVar)";
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var result = await conn.QuerySingleOrDefaultAsync<(double? low, double? high)>(
+                    $"SELECT MIN(Low), MAX(High) FROM {_tableName} {lowAndHightwhereClause}",
+                    new
+                    {
+                        priceTypeVar = priceType,
                         startDateVar = startDate
                     }, null, commandTimeout);
 
-                var firstEod = await gridReader.ReadSingleOrDefaultAsync<double?>();
-                var lowAndHigh = await gridReader.ReadSingleOrDefaultAsync<(double? Low, double? High)>();
-                
-                return (
-                    firstEod.HasValue ? Convert.ToDecimal(firstEod.Value) : (decimal?)null,
-                    lowAndHigh.Low.HasValue ? Convert.ToDecimal(lowAndHigh.Low.Value) : (decimal?)null,
-                    lowAndHigh.High.HasValue ? Convert.ToDecimal(lowAndHigh.High.Value) : (decimal?)null);
+                return result.high.HasValue && result.low.HasValue
+                    ? (Convert.ToDecimal(result.low.Value), Convert.ToDecimal(result.high.Value))
+                    : ((decimal low, decimal high)?)null;
             }
         }
 

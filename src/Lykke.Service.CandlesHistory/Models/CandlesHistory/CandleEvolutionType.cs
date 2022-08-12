@@ -3,9 +3,11 @@
 
 namespace Lykke.Service.CandlesHistory.Models.CandlesHistory
 {
-    public class PriceEvolution
+    public enum CandleEvolutionType
     {
-        public PriceEvolutionPeriodType Period { get; set; }
-        public decimal EodPrice { get; set; }
+        Today,
+        Month,
+        Year,
+        AllTime
     }
 }

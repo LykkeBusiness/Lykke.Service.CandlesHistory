@@ -49,9 +49,14 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
                 throw;
             }
         }
-        
-        public async Task<(decimal? firstEod, decimal? lowest, decimal? highest)> GetPriceEvolutions(string assetPairId,
-            CandlePriceType priceType, CandleTimeInterval interval, DateTime? startDate)
+
+        public Task<decimal?> GetPricesEvolution(string assetPairId, CandlePriceType priceType, DateTime? startDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(decimal low, decimal high)?> GetCandlesEvolution(string assetPairId, CandlePriceType priceType,
+            DateTime? startDate)
         {
             throw new NotImplementedException();
         }
