@@ -328,7 +328,7 @@ namespace Lykke.Service.CandlesHistory.Controllers
             });
         }
 
-        [HttpGet("price-evolution/{assetPairId}/{priceType}/{date:datetime}")]
+        [HttpGet("prices-evolution/{assetPairId}/{priceType}/{date:datetime}")]
         [ProducesResponseType(typeof(IEnumerable<PriceEvolution>), (int) HttpStatusCode.OK)]
         public async Task<IActionResult> GetPricesEvolution([FromRoute] string assetPairId, CandlePriceType priceType, DateTime date)
         {
@@ -362,7 +362,7 @@ namespace Lykke.Service.CandlesHistory.Controllers
             return Ok(result);
         }
 
-        [HttpGet("candle-evolution/{assetPairId}/{priceType}/{date:datetime}")]
+        [HttpGet("candles-evolution/{assetPairId}/{priceType}/{date:datetime}")]
         [ProducesResponseType(typeof(IEnumerable<CandleEvolution>), (int) HttpStatusCode.OK)]
         public async Task<IActionResult> GetCandlesEvolution([FromRoute] string assetPairId, CandlePriceType priceType, DateTime date)
         {
