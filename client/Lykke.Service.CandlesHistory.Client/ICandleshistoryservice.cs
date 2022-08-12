@@ -84,7 +84,7 @@ namespace Lykke.Service.CandlesHistory.Client
         Task<HttpOperationResponse<object>> GetCandlesHistoryOrErrorWithHttpMessagesAsync(string assetPairId, CandlePriceType priceType, CandleTimeInterval timeInterval, System.DateTime fromMoment, System.DateTime toMoment, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
-        /// Returns the time of the closest available bar in the past if any.
+        /// Returns the prices evolution.
         /// </summary>
         /// <param name='assetPairId'>
         /// Asset pair ID
@@ -110,6 +110,27 @@ namespace Lykke.Service.CandlesHistory.Client
         Task<HttpOperationResponse<object>> GetRecentCandleTimeOrErrorWithHttpMessagesAsync(string assetPairId, CandlePriceType priceType, CandleTimeInterval timeInterval, System.DateTime lastMoment, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
+        /// Returns the candles evolution.
+        /// </summary>
+        /// <param name='assetPairId'>
+        /// Asset pair ID
+        /// </param>
+        /// <param name='priceType'>
+        /// Price type. Possible values include: 'Unspecified', 'Bid', 'Ask',
+        /// 'Mid', 'Trades'
+        /// </param>
+        /// <param name='date'>
+        /// Starting point in ISO 8601
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<object>> GetCandlesEvolutionOrErrorWithHttpMessagesAsync(string assetPairId, CandlePriceType priceType, System.DateTime date, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        
+        /// <summary>
         /// Returns the time of the closest available bar in the past if any.
         /// </summary>
         /// <param name='assetPairId'>
@@ -128,7 +149,7 @@ namespace Lykke.Service.CandlesHistory.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> GetPriceEvolutionsOrErrorWithHttpMessagesAsync(string assetPairId, CandlePriceType priceType, System.DateTime date, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> GetPricesEvolutionOrErrorWithHttpMessagesAsync(string assetPairId, CandlePriceType priceType, System.DateTime date, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Checks service is alive

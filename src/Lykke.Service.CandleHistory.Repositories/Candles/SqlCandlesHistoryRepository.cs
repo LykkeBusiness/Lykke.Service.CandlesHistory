@@ -45,18 +45,32 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
                 throw;
             }
         }
-
-        public async Task<(decimal? firstEod, decimal? lowest, decimal? highest)> GetPriceEvolutions(string assetPairId, CandlePriceType priceType,
-            CandleTimeInterval interval, DateTime? startDate)
+        
+        public async Task<decimal?> GetPricesEvolution(string assetPairId, CandlePriceType priceType, DateTime? startDate)
         {
             var repo = GetRepo(assetPairId);
             try
             {
-                return await repo.GetPriceEvolutions(priceType, interval, startDate);
+                return await repo.GetPricesEvolution(priceType, startDate);
             }
             catch (Exception ex)
             {
-                await _log.WriteErrorAsync("get lowest and highest price with retries failed", assetPairId, ex);
+                await _log.WriteErrorAsync("get price evolution with retries failed", assetPairId, ex);
+                throw;
+            }
+        }
+
+        public async Task<(decimal low, decimal high)?> GetCandlesEvolution(string assetPairId, CandlePriceType priceType,
+            DateTime? startDate)
+        {
+            var repo = GetRepo(assetPairId);
+            try
+            {
+                return await repo.GetCandlesEvolution(priceType, startDate);
+            }
+            catch (Exception ex)
+            {
+                await _log.WriteErrorAsync("get candle evolution with retries failed", assetPairId, ex);
                 throw;
             }
         }

@@ -161,7 +161,7 @@ namespace Lykke.Service.CandlesHistory.Client
         }
 
         /// <summary>
-        /// Returns the time of the closest available bar in the past if any.
+        /// Returns the prices evolution.
         /// </summary>
         /// <param name='assetPairId'>
         /// Asset pair ID
@@ -179,9 +179,36 @@ namespace Lykke.Service.CandlesHistory.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        public static async Task<object> GetPriceEvolutionsOrError(this ICandleshistoryservice operations, string assetPairId, CandlePriceType priceType, System.DateTime date, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<object> GetPricesEvolutionOrError(this ICandleshistoryservice operations, string assetPairId, CandlePriceType priceType, System.DateTime date, CancellationToken cancellationToken = default(CancellationToken))
         {
-            using (var _result = await operations.GetPriceEvolutionsOrErrorWithHttpMessagesAsync(assetPairId, priceType, date, null, cancellationToken).ConfigureAwait(false))
+            using (var _result = await operations.GetPricesEvolutionOrErrorWithHttpMessagesAsync(assetPairId, priceType, date, null, cancellationToken).ConfigureAwait(false))
+            {
+                return _result.Body;
+            }
+        }
+
+        /// <summary>
+        /// Returns the candles evolution.
+        /// </summary>
+        /// <param name='assetPairId'>
+        /// Asset pair ID
+        /// </param>
+        /// <param name='priceType'>
+        /// Price type. Possible values include: 'Unspecified', 'Bid', 'Ask',
+        /// 'Mid', 'Trades'
+        /// </param>
+        /// <param name='date'>
+        /// Starting point in ISO 8601
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        public static async Task<object> GetCandlesEvolutionOrError(this ICandleshistoryservice operations, string assetPairId, CandlePriceType priceType, System.DateTime date, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            using (var _result = await operations.GetCandlesEvolutionOrErrorWithHttpMessagesAsync(assetPairId, priceType, date, null, cancellationToken).ConfigureAwait(false))
             {
                 return _result.Body;
             }

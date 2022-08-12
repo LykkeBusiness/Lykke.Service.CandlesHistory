@@ -328,20 +328,19 @@ namespace Lykke.Service.CandlesHistory.Controllers
             });
         }
 
-        [HttpGet("price-evolutions/{assetPairId}/{priceType}/{date:datetime}")]
+        [HttpGet("price-evolution/{assetPairId}/{priceType}/{date:datetime}")]
         [ProducesResponseType(typeof(IEnumerable<PriceEvolution>), (int) HttpStatusCode.OK)]
-        public async Task<IActionResult> GetPriceEvolutions([FromRoute] string assetPairId, CandlePriceType priceType, DateTime date)
+        public async Task<IActionResult> GetPricesEvolution([FromRoute] string assetPairId, CandlePriceType priceType, DateTime date)
         {
             date = date == default
                 ? DateTime.UtcNow.Date
                 : date.ConvertToUtc().Date;
 
-            var tasks = new Dictionary<PriceEvolutionPeriodType, Task<(decimal? firstEod, decimal? lowest, decimal? highest)>>();
+            var tasks = new Dictionary<PriceEvolutionPeriodType, Task<decimal?>>();
             foreach (PriceEvolutionPeriodType period in Enum.GetValues(typeof(PriceEvolutionPeriodType)))
             {
-                var startDate = period.GetPriceEvolutionPeriodDate(date);
-                tasks.Add(period, _candlesHistoryRepository.GetPriceEvolutions(assetPairId,
-                    priceType, CandleTimeInterval.Day, startDate));
+                var startDate = period.GetPriceEvolutionStartDate(date);
+                tasks.Add(period, _candlesHistoryRepository.GetPricesEvolution(assetPairId, priceType, startDate));
             }
             await Task.WhenAll(tasks.Values);
 
@@ -350,13 +349,49 @@ namespace Lykke.Service.CandlesHistory.Controllers
             tasks.ForEach(async x =>
             {
                 var value = await x.Value;
-                result.Add(new PriceEvolution
+                if (value.HasValue)
                 {
-                    Period = x.Key,
-                    FirstEod = value.firstEod,
-                    Highest = value.highest,
-                    Lowest = value.lowest
-                });
+                    result.Add(new PriceEvolution
+                    {
+                        Period = x.Key,
+                        EodPrice = value.Value
+                    });
+                }
+            });
+
+            return Ok(result);
+        }
+
+        [HttpGet("candle-evolution/{assetPairId}/{priceType}/{date:datetime}")]
+        [ProducesResponseType(typeof(IEnumerable<CandleEvolution>), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> GetCandlesEvolution([FromRoute] string assetPairId, CandlePriceType priceType, DateTime date)
+        {
+            date = date == default
+                ? DateTime.UtcNow.Date
+                : date.ConvertToUtc().Date;
+
+            var tasks = new Dictionary<CandleEvolutionType, Task<(decimal low, decimal high)?>>();
+            foreach (CandleEvolutionType type in Enum.GetValues(typeof(CandleEvolutionType)))
+            {
+                var startDate = type.GetCandleEvolutionStartDate(date);
+                tasks.Add(type, _candlesHistoryRepository.GetCandlesEvolution(assetPairId, priceType, startDate));
+            }
+            await Task.WhenAll(tasks.Values);
+
+            var result = new List<CandleEvolution>();
+
+            tasks.ForEach(async x =>
+            {
+                var value = await x.Value;
+                if (value.HasValue)
+                {
+                    result.Add(new CandleEvolution
+                    {
+                        Type = x.Key,
+                        Low = value.Value.low,
+                        High = value.Value.high
+                    }); 
+                }
             });
 
             return Ok(result);

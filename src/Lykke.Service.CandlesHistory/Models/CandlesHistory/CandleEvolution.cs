@@ -3,9 +3,10 @@
 
 namespace Lykke.Service.CandlesHistory.Models.CandlesHistory
 {
-    public class PriceEvolution
+    public class CandleEvolution
     {
-        public PriceEvolutionPeriodType Period { get; set; }
-        public decimal EodPrice { get; set; }
+        public CandleEvolutionType Type { get; set; }
+        public decimal Low { get; set; }
+        public decimal High { get; set; }
     }
 }

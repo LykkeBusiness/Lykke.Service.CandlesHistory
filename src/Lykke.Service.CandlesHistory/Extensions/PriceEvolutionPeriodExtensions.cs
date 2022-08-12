@@ -4,12 +4,13 @@
 using System;
 using Lykke.Service.CandlesHistory.Models.CandlesHistory;
 using Lykke.Snow.Common.Types;
+using DateOnly = Lykke.Snow.Common.Types.DateOnly;
 
 namespace Lykke.Service.CandlesHistory.Extensions
 {
     public static class PriceEvolutionPeriodExtensions
     {
-        public static DateOnly? GetPriceEvolutionPeriodDate(this PriceEvolutionPeriodType period, DateOnly date)
+        public static DateOnly? GetPriceEvolutionStartDate(this PriceEvolutionPeriodType period, DateOnly date)
         {
             var dateTime = (DateTime) date;
             switch (period)
@@ -36,6 +37,22 @@ namespace Lykke.Service.CandlesHistory.Extensions
                     return dateTime.AddYears(-5);
                 case PriceEvolutionPeriodType.TenYears:
                     return dateTime.AddYears(-10);
+                default: throw new NotImplementedException();
+            }
+        }
+        
+        public static DateOnly? GetCandleEvolutionStartDate(this CandleEvolutionType type, DateOnly date)
+        {
+            var dateTime = (DateTime) date;
+            switch (type)
+            {
+                case CandleEvolutionType.AllTime:
+                    return null;
+                case CandleEvolutionType.Today:
+                    return dateTime;
+                case CandleEvolutionType.Month:
+                    return dateTime.AddMonths(-1);
+                case CandleEvolutionType.Year:return dateTime.AddYears(-1);
                 default: throw new NotImplementedException();
             }
         }
