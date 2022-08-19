@@ -11,6 +11,7 @@ using Lykke.Job.CandlesProducer.Contract;
 using Lykke.Service.CandlesHistory.Core.Domain.Candles;
 using Lykke.Service.CandlesHistory.Core.Services.Assets;
 using Lykke.Service.CandlesHistory.Core.Services.Candles;
+using Lykke.Service.CandlesHistory.Extensions;
 using Lykke.Service.CandlesHistory.Models;
 using Lykke.Service.CandlesHistory.Models.CandlesHistory;
 using Lykke.Service.CandlesHistory.Services.Settings;
@@ -30,17 +31,20 @@ namespace Lykke.Service.CandlesHistory.Controllers
         private readonly ICandlesManager _candlesManager;
         private readonly IAssetPairsManager _assetPairsManager;
         private readonly DbSettings _dbSettings;
+        private readonly ICandlesHistoryRepository _candlesHistoryRepository;
 
         #region Initialization
 
         public CandlesHistoryController(
             ICandlesManager candlesManager,
             IAssetPairsManager assetPairsManager,
-            DbSettings dbSettings)
+            DbSettings dbSettings,
+            ICandlesHistoryRepository candlesHistoryRepository)
         {
             _candlesManager = candlesManager;
             _assetPairsManager = assetPairsManager;
             _dbSettings = dbSettings;
+            _candlesHistoryRepository = candlesHistoryRepository;
         }
 
         #endregion
@@ -322,6 +326,75 @@ namespace Lykke.Service.CandlesHistory.Controllers
                 Exists = recentTime.HasValue,
                 ResultTimestamp = recentTime ?? default
             });
+        }
+
+        [HttpGet("prices-evolution/{assetPairId}/{priceType}/{date:datetime}")]
+        [ProducesResponseType(typeof(IEnumerable<PriceEvolution>), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> GetPricesEvolution([FromRoute] string assetPairId, CandlePriceType priceType, DateTime date)
+        {
+            date = date == default
+                ? DateTime.UtcNow.Date
+                : date.ConvertToUtc().Date;
+
+            var tasks = new Dictionary<PriceEvolutionPeriodType, Task<decimal?>>();
+            foreach (PriceEvolutionPeriodType period in Enum.GetValues(typeof(PriceEvolutionPeriodType)))
+            {
+                var startDate = period.GetPriceEvolutionStartDate(date);
+                tasks.Add(period, _candlesHistoryRepository.GetPricesEvolution(assetPairId, priceType, startDate));
+            }
+            await Task.WhenAll(tasks.Values);
+
+            var result = new List<PriceEvolution>();
+
+            tasks.ForEach(async x =>
+            {
+                var value = await x.Value;
+                if (value.HasValue)
+                {
+                    result.Add(new PriceEvolution
+                    {
+                        Period = x.Key,
+                        EodPrice = value.Value
+                    });
+                }
+            });
+
+            return Ok(result);
+        }
+
+        [HttpGet("candles-evolution/{assetPairId}/{priceType}/{date:datetime}")]
+        [ProducesResponseType(typeof(IEnumerable<CandleEvolution>), (int) HttpStatusCode.OK)]
+        public async Task<IActionResult> GetCandlesEvolution([FromRoute] string assetPairId, CandlePriceType priceType, DateTime date)
+        {
+            date = date == default
+                ? DateTime.UtcNow.Date
+                : date.ConvertToUtc().Date;
+
+            var tasks = new Dictionary<CandleEvolutionType, Task<(decimal low, decimal high)?>>();
+            foreach (CandleEvolutionType type in Enum.GetValues(typeof(CandleEvolutionType)))
+            {
+                var startDate = type.GetCandleEvolutionStartDate(date);
+                tasks.Add(type, _candlesHistoryRepository.GetCandlesEvolution(assetPairId, priceType, startDate));
+            }
+            await Task.WhenAll(tasks.Values);
+
+            var result = new List<CandleEvolution>();
+
+            tasks.ForEach(async x =>
+            {
+                var value = await x.Value;
+                if (value.HasValue)
+                {
+                    result.Add(new CandleEvolution
+                    {
+                        Type = x.Key,
+                        Low = value.Value.low,
+                        High = value.Value.high
+                    }); 
+                }
+            });
+
+            return Ok(result);
         }
 
         #endregion

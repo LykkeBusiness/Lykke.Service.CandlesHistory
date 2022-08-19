@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using JetBrains.Annotations;
 using Lykke.Job.CandlesProducer.Contract;
 using Lykke.Logs.MsSql.Extensions;
 
@@ -56,6 +57,45 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
                     log?.WriteErrorAsync(nameof(SqlAssetPairCandlesHistoryRepository), "CreateTableIfDoesntExists", null, ex);
                     throw;
                 }
+            }
+        }
+
+        public async Task<decimal?> GetPricesEvolution(CandlePriceType priceType, DateTime? startDate)
+        {
+            var whereClause =
+                "WHERE PriceType=@priceTypeVar AND TimeInterval=86400 AND (@startDateVar IS NULL OR Timestamp <= @startDateVar)";
+            var orderByClause = $"ORDER BY Timestamp {(startDate.HasValue ? "DESC" : "ASC")}";
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var result = await conn.QuerySingleOrDefaultAsync<double?>(
+                    $"SELECT TOP 1 [Close] FROM {_tableName} {whereClause} {orderByClause}",
+                    new
+                    {
+                        priceTypeVar = priceType,
+                        startDateVar = startDate
+                    }, null, commandTimeout);
+                
+                return result.HasValue ? Convert.ToDecimal(result.Value) : (decimal?)null;
+            }
+        }
+
+        public async Task<(decimal low, decimal high)?> GetCandlesEvolution(CandlePriceType priceType, DateTime? startDate)
+        {
+            var lowAndHightwhereClause =
+                "WHERE PriceType=@priceTypeVar AND TimeInterval=86400 AND (@startDateVar IS NULL OR Timestamp >= @startDateVar)";
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                var result = await conn.QuerySingleOrDefaultAsync<(double? low, double? high)>(
+                    $"SELECT MIN(Low), MAX(High) FROM {_tableName} {lowAndHightwhereClause}",
+                    new
+                    {
+                        priceTypeVar = priceType,
+                        startDateVar = startDate
+                    }, null, commandTimeout);
+
+                return result.high.HasValue && result.low.HasValue
+                    ? (Convert.ToDecimal(result.low.Value), Convert.ToDecimal(result.high.Value))
+                    : ((decimal low, decimal high)?)null;
             }
         }
 

@@ -50,6 +50,17 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
             }
         }
 
+        public Task<decimal?> GetPricesEvolution(string assetPairId, CandlePriceType priceType, DateTime? startDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(decimal low, decimal high)?> GetCandlesEvolution(string assetPairId, CandlePriceType priceType,
+            DateTime? startDate)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ICandle> TryGetFirstCandleAsync(string assetPairId, CandleTimeInterval interval, CandlePriceType priceType)
         {
             var repo = await GetRepo(assetPairId, interval);
