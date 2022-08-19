@@ -66,7 +66,6 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
                 $"New table has been created successfully: {_tableName}");
         }
 
-        [CanBeNull]
         public async Task<decimal?> GetPricesEvolution(CandlePriceType priceType, DateTime? startDate)
         {
             var whereClause =
@@ -86,7 +85,6 @@ namespace Lykke.Service.CandleHistory.Repositories.Candles
             }
         }
 
-        [CanBeNull]
         public async Task<(decimal low, decimal high)?> GetCandlesEvolution(CandlePriceType priceType, DateTime? startDate)
         {
             var lowAndHightwhereClause =
