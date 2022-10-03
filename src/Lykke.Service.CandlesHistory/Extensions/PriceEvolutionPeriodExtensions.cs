@@ -22,7 +22,7 @@ namespace Lykke.Service.CandlesHistory.Extensions
                 case PriceEvolutionPeriodType.Day:
                     return dateTime.AddDays(-1);
                 case PriceEvolutionPeriodType.Week:
-                    return dateTime.AddDays(-1);
+                    return dateTime.AddDays(-7);
                 case PriceEvolutionPeriodType.Month:
                     return dateTime.AddMonths(-1);
                 case PriceEvolutionPeriodType.ThreeMonths:
