@@ -76,6 +76,7 @@ namespace Lykke.Service.CandlesHistory
                             new Newtonsoft.Json.Serialization.DefaultContractResolver();
                     });
 
+                services.AddEndpointsApiExplorer();
                 services.AddSwaggerGen(options =>
                 {
                     options.DefaultLykkeConfiguration("v1", "Candles history service");
@@ -142,7 +143,10 @@ namespace Lykke.Service.CandlesHistory
                     app.UseHsts();
                 }
 
-                app.UseLykkeMiddleware(nameof(Startup), ex => ErrorResponse.Create("Technical problem"));
+                app.UseLykkeMiddleware(nameof(Startup), ex =>
+                {
+                    return ErrorResponse.Create($"Technical problem:  {ex.Message}\r\nInnerEX:  {ex.InnerException.Message}");
+                });
 
                 app.UseRouting();
                 app.UseAuthentication();
@@ -164,10 +168,13 @@ namespace Lykke.Service.CandlesHistory
                             }
                     );
                 });
+                app.UseSwagger();
                 app.UseSwaggerUI(x =>
                 {
                     x.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 });
+
+                
                 app.UseStaticFiles();
 
                 appLifetime.ApplicationStarted.Register(() => StartApplication().GetAwaiter().GetResult());
