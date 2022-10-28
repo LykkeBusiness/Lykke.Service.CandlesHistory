@@ -17,9 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="7.6.0" />
-    <PackageReference Include="Lykke.Logs" Version="7.4.0" />
-    <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="2.0.5" />
+    <PackageReference Include="LykkeBiz.Logs" Version="9.1.0" />
     <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
