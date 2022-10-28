@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Version>1.0.1</Version>
     <Authors>Lykke</Authors>
     <Company>Lykke</Company>
@@ -13,13 +13,12 @@
     <RepositoryUrl>https://github.com/lykkecloud/Lykke.Service.CandlesHistory.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Lykke</PackageTags>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="7.5.0" />
-    <PackageReference Include="Lykke.Logs" Version="7.4.0" />
-    <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="2.0.5" />
-    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.11" />
+    <PackageReference Include="LykkeBiz.Logs" Version="9.1.0" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
