@@ -1,3 +1,5 @@
+[![.NET](https://github.com/LykkeBusiness/Lykke.Service.CandlesHistory/actions/workflows/build.yml/badge.svg)](https://github.com/LykkeBusiness/Lykke.Service.CandlesHistory/actions/workflows/build.yml)
+
 # MarginTrading.CandlesHistory API #
 
 API to get candles history.
