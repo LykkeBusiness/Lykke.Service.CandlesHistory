@@ -47,7 +47,7 @@
     <PackageReference Include="Lykke.Service.Assets.Client" Version="4.0.1" />
     <PackageReference Include="Lykke.Snow.Common.Startup" Version="3.10.0" />
     <PackageReference Include="LykkeBiz.HttpClientGenerator" Version="5.6.0" />
-    <PackageReference Include="LykkeBiz.Logs.Serilog" Version="3.3.1" />
+    <PackageReference Include="LykkeBiz.Logs.Serilog" Version="3.3.3" />
     <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.21.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
