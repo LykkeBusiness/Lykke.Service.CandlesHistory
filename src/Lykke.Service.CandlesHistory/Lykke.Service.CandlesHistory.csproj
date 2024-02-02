@@ -41,7 +41,7 @@
   </Target>
   <ItemGroup>
     <PackageReference Include="Lykke.Common.ApiLibrary" Version="3.1.1" />
-    <PackageReference Include="LykkeBiz.Logs" Version="9.1.0" />
+    <PackageReference Include="LykkeBiz.Logs" Version="9.1.1" />
     <PackageReference Include="LykkeBiz.Logs.MsSql" Version="3.1.0" />
     <PackageReference Include="Lykke.MarginTrading.SettingsService.Contracts" Version="1.5.0" />
     <PackageReference Include="Lykke.Service.Assets.Client" Version="4.0.1" />
@@ -58,9 +58,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lykke.Service.CandleHistory.Repositories\Lykke.Service.CandleHistory.Repositories.csproj" />
-    <ProjectReference Include="..\Lykke.Service.CandlesHistory.Core\Lykke.Service.CandlesHistory.Core.csproj" />
-    <ProjectReference Include="..\Lykke.Service.CandlesHistory.Services\Lykke.Service.CandlesHistory.Services.csproj" />
+    <ProjectReference
+      Include="..\Lykke.Service.CandleHistory.Repositories\Lykke.Service.CandleHistory.Repositories.csproj" />
+    <ProjectReference
+      Include="..\Lykke.Service.CandlesHistory.Core\Lykke.Service.CandlesHistory.Core.csproj" />
+    <ProjectReference
+      Include="..\Lykke.Service.CandlesHistory.Services\Lykke.Service.CandlesHistory.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Dockerfile">
@@ -75,5 +78,5 @@
       <DocFile Include="bin\*\*\Lykke.Service.CandlesHistory.xml" />
     </ItemGroup>
     <Copy SourceFiles="@(DocFile)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="false" />
-  </Target> 
+  </Target>
 </Project>
