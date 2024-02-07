@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>2.5.0</Version>
+    <Version>2.5.1</Version>
     <Authors>Lykke</Authors>
     <Company>Lykke</Company>
     <PackageId>Lykke.MarginTrading.CandlesHistory.Contracts</PackageId>
     <Description>Contracts for Lykke.Service.CandlesHistory API</Description>
-    <PackageLicenseUrl>https://github.com/lykkecloud/Lykke.Service.CandlesHistory/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>
+      https://github.com/lykkecloud/Lykke.Service.CandlesHistory/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/lykkecloud/Lykke.Service.CandlesHistory</PackageProjectUrl>
     <PackageIconUrl>https://avatars3.githubusercontent.com/u/14153330?v=3&amp;s=200</PackageIconUrl>
     <RepositoryUrl>https://github.com/lykkecloud/Lykke.Service.CandlesHistory.git</RepositoryUrl>
