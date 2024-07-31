@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
@@ -40,22 +40,22 @@
     <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
   </Target>
   <ItemGroup>
-    <PackageReference Include="LykkeBiz.Common.ApiLibrary" Version="5.0.0" />
-    <PackageReference Include="LykkeBiz.Logs" Version="9.1.1" />
-    <PackageReference Include="LykkeBiz.Logs.MsSql" Version="3.1.0" />
-    <PackageReference Include="Lykke.MarginTrading.SettingsService.Contracts" Version="1.5.0" />
-    <PackageReference Include="Lykke.Service.Assets.Client" Version="4.0.1" />
-    <PackageReference Include="Lykke.Snow.Common.Startup" Version="3.10.0" />
-    <PackageReference Include="LykkeBiz.HttpClientGenerator" Version="5.6.2" />
-    <PackageReference Include="LykkeBiz.Logs.Serilog" Version="3.3.3" />
-    <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.22.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.6.66" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.7" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="LykkeBiz.Common.ApiLibrary" />
+    <PackageReference Include="LykkeBiz.Logs" />
+    <PackageReference Include="LykkeBiz.Logs.MsSql" />
+    <PackageReference Include="Lykke.MarginTrading.SettingsService.Contracts" />
+    <PackageReference Include="Lykke.Service.Assets.Client" />
+    <PackageReference Include="Lykke.Snow.Common.Startup" />
+    <PackageReference Include="LykkeBiz.HttpClientGenerator" />
+    <PackageReference Include="LykkeBiz.Logs.Serilog" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Web" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" />
+    <PackageReference Include="StackExchange.Redis" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lykke.Service.CandleHistory.Repositories\Lykke.Service.CandleHistory.Repositories.csproj" />
