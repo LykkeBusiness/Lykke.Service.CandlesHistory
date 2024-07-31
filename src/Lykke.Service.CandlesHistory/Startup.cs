@@ -32,7 +32,6 @@ using Lykke.Snow.Common.Startup.Log;
 using Lykke.Snow.Common.Startup.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
 namespace Lykke.Service.CandlesHistory
 {
@@ -123,7 +122,7 @@ namespace Lykke.Service.CandlesHistory
         }
 
         [UsedImplicitly]
-        public void Configure(IApplicationBuilder app, IHostEnvironment env, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
             try
             {
@@ -138,10 +137,9 @@ namespace Lykke.Service.CandlesHistory
                     app.UseHsts();
                 }
 
-                app.UseLykkeMiddleware(nameof(Startup), ex =>
-                {
-                    return ErrorResponse.Create($"Technical problem:  {ex.Message}\r\nInnerEX:  {ex.InnerException.Message}");
-                });
+                app.UseLykkeMiddleware(nameof(Startup),
+                    ex => ErrorResponse.Create(
+                        $"Technical problem:  {ex.Message}\r\nInnerEX:  {ex.InnerException.Message}"), false, false);
 
                 app.UseRouting();
                 app.UseAuthentication();
