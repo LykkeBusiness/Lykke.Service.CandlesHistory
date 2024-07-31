@@ -43,7 +43,7 @@ jobs:
           dotnet-version: 8.0.101
 
       - name: Restore dependencies
-        run: dotnet restore ./src/Axle.sln --configfile LykkeBusinessTools/config/snow/nuget.config
+        run: dotnet restore --configfile LykkeBusinessTools/config/snow/nuget.config
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
