@@ -1,29 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Version>2.7.0</Version>
-    <LangVersion>8.0</LangVersion>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
     <AssemblyName>Lykke.Service.CandlesHistory</AssemblyName>
     <RootNamespace>Lykke.Service.CandlesHistory</RootNamespace>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
   <PropertyGroup>
     <NoWarn>1701;1702;1705;CA2007</NoWarn>
     <UserSecretsId>F7428201-B7F7-4571-9ABD-3A1F4CF87613</UserSecretsId>
     <AssemblyName>Lykke.Service.CandlesHistory</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\Release\netcoreapp2.0\Lykke.Service.CandlesHistory.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <DocumentationFile>bin\Debug\netcoreapp2.0\Lykke.Service.CandlesHistory.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Content Update="appsettings.json">
@@ -40,25 +29,24 @@
     <Copy SourceFiles="appsettings.Serilog.json" DestinationFolder="$(PublishDir)" />
   </Target>
   <ItemGroup>
-    <PackageReference Include="Lykke.Common.ApiLibrary" Version="3.1.1" />
-    <PackageReference Include="LykkeBiz.Logs" Version="9.1.1" />
-    <PackageReference Include="LykkeBiz.Logs.MsSql" Version="3.1.0" />
-    <PackageReference Include="Lykke.MarginTrading.SettingsService.Contracts" Version="1.5.0" />
-    <PackageReference Include="Lykke.Service.Assets.Client" Version="4.0.1" />
-    <PackageReference Include="Lykke.Snow.Common.Startup" Version="3.10.0" />
-    <PackageReference Include="LykkeBiz.HttpClientGenerator" Version="5.6.2" />
-    <PackageReference Include="LykkeBiz.Logs.Serilog" Version="3.3.3" />
-    <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.22.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.6.66" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.0" />
+    <PackageReference Include="LykkeBiz.Common.ApiLibrary" />
+    <PackageReference Include="LykkeBiz.Logs" />
+    <PackageReference Include="LykkeBiz.Logs.MsSql" />
+    <PackageReference Include="Lykke.MarginTrading.SettingsService.Contracts" />
+    <PackageReference Include="Lykke.Service.Assets.Client" />
+    <PackageReference Include="Lykke.Snow.Common.Startup" />
+    <PackageReference Include="LykkeBiz.HttpClientGenerator" />
+    <PackageReference Include="LykkeBiz.Logs.Serilog" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" />
+    <PackageReference Include="StackExchange.Redis" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lykke.Service.CandleHistory.Repositories\Lykke.Service.CandleHistory.Repositories.csproj" />
+    <ProjectReference
+      Include="..\Lykke.Service.CandleHistory.Repositories\Lykke.Service.CandleHistory.Repositories.csproj" />
     <ProjectReference Include="..\Lykke.Service.CandlesHistory.Core\Lykke.Service.CandlesHistory.Core.csproj" />
     <ProjectReference Include="..\Lykke.Service.CandlesHistory.Services\Lykke.Service.CandlesHistory.Services.csproj" />
   </ItemGroup>
@@ -66,9 +54,6 @@
     <None Update="Dockerfile">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Validation\" />
   </ItemGroup>
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
     <ItemGroup>
