@@ -1,17 +1,15 @@
+## 2.8.0 - Nova 2. Delivery 46 (September 26, 2024)
+### What's changed
+* LT-5598: Migrate to net 8.
+
 ## 2.7.0 - Nova 2. Delivery 41 (March 29, 2024)
 ### What's changed
 * LT-5447: Update packages.
-
-
-
 
 ## 2.6.0 - Nova 2. Delivery 40 (February 28, 2024)
 ### What's changed
 * LT-5282: Step: deprecated packages validation is failed.
 * LT-5202: Update lykke.httpclientgenerator to 5.6.2.
-
-
-
 
 ## 2.5.1 - Nova 2. Delivery 39. Hotfix 2 (February 7, 2024)
 ### What's changed
@@ -21,11 +19,9 @@
 ### What's changed
 * LT-5168: Add history of releases into `changelog.md`
 
-
 ## 2.4.0 - Nova 2. Delivery 36 (2023-08-31)
 ### What's changed
 * LT-4908: Update nugets.
-
 
 **Full change log**: https://github.com/lykkecloud/lykke.service.candleshistory/compare/v2.2.2...v2.4.0
 
