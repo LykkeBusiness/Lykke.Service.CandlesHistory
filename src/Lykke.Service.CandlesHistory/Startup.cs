@@ -186,12 +186,12 @@ namespace Lykke.Service.CandlesHistory
         private async Task StartApplication()
         {
             try
-            {
-                Program.AppHost.WriteLogs(Environment, Log);
-                
+            {   
                 ApplicationContainer
                     .Resolve<AssemblyLogger>()
                     .StartLogging();
+
+                Program.AppHost.WriteLogs(Environment, Log);
 
                 await Log.WriteMonitorAsync("", "", "Started");
             }
