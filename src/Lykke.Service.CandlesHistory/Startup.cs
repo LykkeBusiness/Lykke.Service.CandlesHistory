@@ -187,10 +187,6 @@ namespace Lykke.Service.CandlesHistory
         {
             try
             {   
-                ApplicationContainer
-                    .Resolve<AssemblyLogger>()
-                    .StartLogging();
-
                 Program.AppHost.WriteLogs(Environment, Log);
 
                 await Log.WriteMonitorAsync("", "", "Started");
