@@ -11,7 +11,7 @@
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Lykke.Job.CandlesProducer.Contract" />
     <PackageReference Include="LykkeBiz.Logs" />
-    <PackageReference Include="Lykke.MarginTrading.SettingsService.Contracts" />
+    <PackageReference Include="Lykke.MarginTrading.AssetService.Contracts" />
     <PackageReference Include="Lykke.Service.Assets.Client" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
   </ItemGroup>

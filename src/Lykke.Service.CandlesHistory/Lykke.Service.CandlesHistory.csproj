@@ -32,7 +32,7 @@
     <PackageReference Include="LykkeBiz.Common.ApiLibrary" />
     <PackageReference Include="LykkeBiz.Logs" />
     <PackageReference Include="LykkeBiz.Logs.MsSql" />
-    <PackageReference Include="Lykke.MarginTrading.SettingsService.Contracts" />
+    <PackageReference Include="Lykke.MarginTrading.AssetService.Contracts" />
     <PackageReference Include="Lykke.Service.Assets.Client" />
     <PackageReference Include="Lykke.Snow.Common.Startup" />
     <PackageReference Include="LykkeBiz.HttpClientGenerator" />

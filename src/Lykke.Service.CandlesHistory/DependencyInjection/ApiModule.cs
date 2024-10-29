@@ -23,7 +23,7 @@ using Lykke.SettingsReader;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using Lykke.Logs.MsSql;
-using MarginTrading.SettingsService.Contracts;
+using MarginTrading.AssetService.Contracts;
 
 namespace Lykke.Service.CandlesHistory.DependencyInjection
 {
