@@ -29,7 +29,6 @@
     <PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageVersion Include="Dapper" Version="2.0.123" />
-    <PackageVersion Include="MessagePack" Version="2.5.187" />
     <PackageVersion Include="Autofac" Version="6.4.0" />
     <PackageVersion Include="JetBrains.Annotations" Version="2022.1.0" />
     <PackageVersion Include="Lykke.Job.CandlesProducer.Contract" Version="5.2.0" />

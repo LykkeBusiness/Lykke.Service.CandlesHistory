@@ -10,7 +10,6 @@
     <PackageReference Include="LykkeBiz.Logs" />
     <PackageReference Include="Lykke.MarginTrading.AssetService.Contracts" />
     <PackageReference Include="LykkeBiz.SettingsReader" />
-    <PackageReference Include="MessagePack" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
     <PackageReference Include="morelinq" />
     <PackageReference Include="Polly" />
