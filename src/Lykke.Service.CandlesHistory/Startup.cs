@@ -26,6 +26,7 @@ using Lykke.Service.CandlesHistory.Services.Settings;
 using Lykke.Service.CandlesHistory.Core.Domain.Candles;
 using Lykke.Service.CandlesHistory.Services;
 using Lykke.Service.CandlesHistory.Services.Assets;
+using Lykke.Snow.Common.AssemblyLogging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.Logging;
 using Lykke.Snow.Common.Startup.Log;
@@ -61,6 +62,7 @@ namespace Lykke.Service.CandlesHistory
         {
             try
             {
+                services.AddAssemblyLogger();
                 services
                     .AddControllers()
                     .AddNewtonsoftJson(options =>
@@ -184,7 +186,7 @@ namespace Lykke.Service.CandlesHistory
         private async Task StartApplication()
         {
             try
-            {
+            {   
                 Program.AppHost.WriteLogs(Environment, Log);
 
                 await Log.WriteMonitorAsync("", "", "Started");

@@ -34,6 +34,7 @@
     <PackageReference Include="LykkeBiz.Logs.MsSql" />
     <PackageReference Include="Lykke.MarginTrading.AssetService.Contracts" />
     <PackageReference Include="Lykke.Service.Assets.Client" />
+    <PackageReference Include="Lykke.Snow.Common" />
     <PackageReference Include="Lykke.Snow.Common.Startup" />
     <PackageReference Include="LykkeBiz.HttpClientGenerator" />
     <PackageReference Include="LykkeBiz.Logs.Serilog" />
