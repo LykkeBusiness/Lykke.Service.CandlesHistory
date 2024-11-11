@@ -7,13 +7,13 @@ using System.Linq;
 using Common.Log;
 using Lykke.Service.Assets.Client;
 using Lykke.Service.Assets.Client.Models;
-using MarginTrading.SettingsService.Contracts;
 using Polly;
 using System;
 using System.Threading;
 using Common;
 using Lykke.Common.Log;
 using Lykke.Service.CandlesHistory.Core.Services.Assets;
+using MarginTrading.AssetService.Contracts;
 
 namespace Lykke.Service.CandlesHistory.Services.Assets
 {

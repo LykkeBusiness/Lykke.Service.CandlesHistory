@@ -10,7 +10,6 @@
     <PackageReference Include="Dapper" />
     <PackageReference Include="LykkeBiz.Logs" />
     <PackageReference Include="LykkeBiz.Logs.MsSql" />
-    <PackageReference Include="MessagePack" />
     <PackageReference Include="Polly" />
   </ItemGroup>
 
