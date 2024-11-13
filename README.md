@@ -56,27 +56,5 @@ All variables and value constraints are default. For instance, to set host URL t
 ### Settings ###
 
 Settings schema is:
-
-```json
-{
-  "Assets": {
-    "ServiceUrl": "http://mt-settings-service.mt.svc.cluster.local",
-    "CacheExpirationPeriod": "00:05:00"
-  },
-  "MtCandlesHistory": {
-    "Db": {
-      "StorageMode": "SqlServer",
-      "SnapshotsConnectionString": "data connection string",
-      "LogsConnectionString": "logs connection string"
-    },
-    "AssetsCache": {
-      "ExpirationPeriod": "00:05:00"
-    },
-    "MaxCandlesCountWhichCanBeRequested": 10000,
-    "UseSerilog": false
-  },
-  "RedisSettings": {
-    "Configuration": "redis connection string"
-  }
-}
-```
+<!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./template.json) -->
+<!-- MARKDOWN-AUTO-DOCS:END -->
