@@ -26,6 +26,8 @@ using Lykke.Service.CandlesHistory.Services.Settings;
 using Lykke.Service.CandlesHistory.Core.Domain.Candles;
 using Lykke.Service.CandlesHistory.Services;
 using Lykke.Service.CandlesHistory.Services.Assets;
+using Lykke.SettingsReader.ConfigurationProvider;
+using Lykke.SettingsReader.SettingsTemplate;
 using Lykke.Snow.Common.AssemblyLogging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.Logging;
@@ -77,13 +79,13 @@ namespace Lykke.Service.CandlesHistory
                 {
                     options.DefaultLykkeConfiguration("v1", "Candles history service");
                 });
-                
+
                 _mtSettingsManager = Configuration.LoadSettings<AppSettings>();
 
                 var candlesHistory = _mtSettingsManager.CurrentValue.CandlesHistory != null
                     ? _mtSettingsManager.Nested(x => x.CandlesHistory)
                     : _mtSettingsManager.Nested(x => x.MtCandlesHistory);
-                
+
 
                 Log = CreateLogWithSlack(Configuration, services, candlesHistory,
                     _mtSettingsManager.CurrentValue.SlackNotifications);
@@ -91,6 +93,8 @@ namespace Lykke.Service.CandlesHistory
                 services.AddSingleton<ILoggerFactory>(x => new WebHostLoggerFactory(Log));
 
                 services.AddApplicationInsightsTelemetry();
+
+                services.AddSettingsTemplateGenerator();
             }
             catch (Exception ex)
             {
@@ -108,7 +112,7 @@ namespace Lykke.Service.CandlesHistory
             var candlesHistory = _mtSettingsManager.CurrentValue.CandlesHistory != null
                 ? _mtSettingsManager.Nested(x => x.CandlesHistory)
                 : _mtSettingsManager.Nested(x => x.MtCandlesHistory);
-            
+
             builder.RegisterModule(new ApiModule(
                 marketType,
                 candlesHistory.CurrentValue,
@@ -129,7 +133,7 @@ namespace Lykke.Service.CandlesHistory
             try
             {
                 ApplicationContainer = app.ApplicationServices.GetAutofacRoot();
-                
+
                 if (env.IsDevelopment())
                 {
                     app.UseDeveloperExceptionPage();
@@ -149,10 +153,11 @@ namespace Lykke.Service.CandlesHistory
                 app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
+                    endpoints.MapSettingsTemplate();
                 });
                 app.UseSwagger(c =>
                 {
-                    c.PreSerializeFilters.Add((swagger, httpReq) => 
+                    c.PreSerializeFilters.Add((swagger, httpReq) =>
                         swagger.Servers =
                             new List<OpenApiServer>
                             {
@@ -169,7 +174,7 @@ namespace Lykke.Service.CandlesHistory
                     x.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 });
 
-                
+
                 app.UseStaticFiles();
 
                 appLifetime.ApplicationStarted.Register(() => StartApplication().GetAwaiter().GetResult());
@@ -186,7 +191,7 @@ namespace Lykke.Service.CandlesHistory
         private async Task StartApplication()
         {
             try
-            {   
+            {
                 Program.AppHost.WriteLogs(Environment, Log);
 
                 await Log.WriteMonitorAsync("", "", "Started");
