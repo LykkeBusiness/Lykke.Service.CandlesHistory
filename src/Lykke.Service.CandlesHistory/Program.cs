@@ -21,7 +21,6 @@ namespace Lykke.Service.CandlesHistory
     [UsedImplicitly]
     internal sealed class Program
     {
-        //test
         internal static IHost AppHost { get; private set; }
 
         public static string EnvInfo => Environment.GetEnvironmentVariable("ENV_INFO");
