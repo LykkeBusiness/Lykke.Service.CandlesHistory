@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>2.8.0</Version>
+    <Version>2.9.0</Version>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <AspNetCoreModuleName>AspNetCoreModuleV2</AspNetCoreModuleName>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
@@ -21,11 +21,11 @@
     <PackageReference Include="Moq" />
     <PackageReference Include="MSTest.TestAdapter" />
     <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="Lykke.Service.CandlesHistory.Client" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference
-      Include="..\..\client\Lykke.Service.CandlesHistory.Client\Lykke.Service.CandlesHistory.Client.csproj" />
+
     <ProjectReference
       Include="..\..\src\Lykke.Service.CandlesHistory.Services\Lykke.Service.CandlesHistory.Services.csproj" />
   </ItemGroup>

@@ -1,3 +1,9 @@
+## 2.9.0 - Nova 2. Delivery 47 (November 15, 2024)
+### What's changed
+* LT-5843: Update messagepack to 2.x version.
+* LT-5766: Add assembly load logger.
+
+
 ## 2.8.0 - Nova 2. Delivery 46 (September 26, 2024)
 ### What's changed
 * LT-5598: Migrate to net 8.
