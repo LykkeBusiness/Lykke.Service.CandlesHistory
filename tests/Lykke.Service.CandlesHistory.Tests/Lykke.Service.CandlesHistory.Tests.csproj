@@ -21,11 +21,11 @@
     <PackageReference Include="Moq" />
     <PackageReference Include="MSTest.TestAdapter" />
     <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="Lykke.Service.CandlesHistory.Client" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference
-      Include="..\..\client\Lykke.Service.CandlesHistory.Client\Lykke.Service.CandlesHistory.Client.csproj" />
+
     <ProjectReference
       Include="..\..\src\Lykke.Service.CandlesHistory.Services\Lykke.Service.CandlesHistory.Services.csproj" />
   </ItemGroup>
