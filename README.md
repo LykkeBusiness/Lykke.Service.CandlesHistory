@@ -57,4 +57,50 @@ All variables and value constraints are default. For instance, to set host URL t
 
 Settings schema is:
 <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=./template.json) -->
+<!-- The below code snippet is automatically added from ./template.json -->
+```json
+{
+  "APPINSIGHTS_INSTRUMENTATIONKEY": "String",
+  "APP_UID": "Integer",
+  "ASPNETCORE_ENVIRONMENT": "String",
+  "ASPNETCORE_ENVIRONMENT_TEST1": "String",
+  "Assets": {
+    "ApiKey": "String",
+    "CacheExpirationPeriod": "DateTime",
+    "ServiceUrl": "String"
+  },
+  "ENVIRONMENT": "String",
+  "ENVIRONMENT_TEST1": "String",
+  "ENV_INFO": "String",
+  "Kestrel": {
+    "EndPoints": {
+      "Http": {
+        "Url": "String"
+      }
+    }
+  },
+  "MtCandlesHistory": {
+    "AssetsCache": {
+      "ApiKey": "String",
+      "ExpirationPeriod": "DateTime"
+    },
+    "Db": {
+      "LogsConnectionString": "String",
+      "SnapshotsConnectionString": "String",
+      "StorageMode": "String"
+    },
+    "MaxCandlesCountWhichCanBeRequested": "Integer",
+    "UseSerilog": "Boolean"
+  },
+  "RedisSettings": {
+    "Configuration": "String"
+  },
+  "serilog": {
+    "minimumLevel": {
+      "default": "String"
+    }
+  },
+  "TZ": "String"
+}
+```
 <!-- MARKDOWN-AUTO-DOCS:END -->
